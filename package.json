@@ -45,7 +45,6 @@
   },
   "homepage": "https://github.com/alykoshin/mini-exec",
   "dependencies": {
-    "minimist": "^1.2.0"
   },
   "devDependencies": {
     "chai": "^3.4.1",
