@@ -8,7 +8,7 @@
     "/dist/**/*"
   ],
   "engines": {
-    "node": ">=0.12"
+    "node": ">=12"
   },
   "scripts": {
     "_npm-audit": "npm audit || echo '\n*** Please check warnings above ***\n' && npm audit --production --audit-level high && echo '\n*** npm audit reported no high-level vulnerabilities for production configuration ***\n' ",
