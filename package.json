@@ -1,6 +1,6 @@
 {
   "name": "mini-exec",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "exec() with non-buffered output",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
