@@ -2,9 +2,9 @@
 
 'use strict';
 
-var chai = require('chai');
-var assert = chai.assert;
-var expect = chai.expect;
+const chai = require('chai');
+const assert = chai.assert;
+const expect = chai.expect;
 chai.should();
 chai.use(require('chai-things')); //http://chaijs.com/plugins/chai-things
 

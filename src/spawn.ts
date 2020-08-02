@@ -1,13 +1,19 @@
-'use strict';
+import { spawn } from 'child_process'
 
-var child_process = require('child_process');
 
-var exec = function(command, params, options, exitCallback, logCallback) {
+export const exec = function(command, params, options, exitCallback, logCallback) {
   options = options || {};
 
   var logger = {
     debug: function(msg) {
       if (options.debug) {
+        console.log('[mini-exec] '+msg);
+      }
+    },
+    log: function(msg) {
+      if (typeof logCallback === 'function') {
+        logCallback(msg);
+      } else {
         console.log('[mini-exec] '+msg);
       }
     },
@@ -46,7 +52,6 @@ var exec = function(command, params, options, exitCallback, logCallback) {
 
   // Starting external process
 
-  var spawn = child_process.spawn;
   try {
     child = spawn(command, params);
 
@@ -133,4 +138,4 @@ var exec = function(command, params, options, exitCallback, logCallback) {
 // Exporting object
 
 
-module.exports = exec;
+// module.exports = exec;

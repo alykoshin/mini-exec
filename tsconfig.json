@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowJs": false,
+    "checkJs": false,
+    "noEmitOnError": false,
+    //    "target": "es2018",
+    "target": "esnext",
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "declaration": true,
+    "strict": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": false,
+    "strictNullChecks": false,
+    "outDir": "./dist",
+    //    "rootDir": "./",
+    "baseUrl": ".",
+    //    "paths": {
+    //      "modules": ["../../modules"],
+    //      "lib-shared": ["../../lib-shared"]
+    //    }
+  },
+  "disableWarnings": false,
+  "include": [
+    "./src"
+    //    "./src/**/*"
+  ],
+  "exclude": [
+    "**/node_modules/*",
+    "**/test/*",
+    "/dist"
+  ],
+  "references": [
+  ]
+}

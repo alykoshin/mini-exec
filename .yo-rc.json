@@ -1,0 +1,12 @@
+{
+  "generator-mini-package": {
+    "promptValues": {
+      "pkgDesc": "Set of misc utilities for strings",
+      "keywords": [
+        "string",
+        "utility",
+        "utilities"
+      ]
+    }
+  }
+}
