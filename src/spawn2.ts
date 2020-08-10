@@ -15,6 +15,27 @@ const ONE_MINUTE = 60 * ONE_SECOND;
 export const DEFAULT_TIMEOUT = 1*ONE_MINUTE;
 
 
+export interface RunArguments {
+  command: string,
+  args: string[],
+  cwd?: string,
+  NODE_ENV: string,
+  timeout?: number,
+}
+
+export interface RunResult {
+  code: number,
+  output: string,
+  stdout: string,
+  stderr: string,
+}
+
+export interface RunError {
+  code: number,
+  error,
+}
+
+
 export class ShellRunner extends EventEmitter {
   timeout: number = DEFAULT_TIMEOUT
 
@@ -23,17 +44,17 @@ export class ShellRunner extends EventEmitter {
     this.timeout = timeout;
   }
 
-  async run({ command: command_, args, cwd, NODE_ENV, timeout }: { command: string, args: string[], cwd?: string, NODE_ENV: string, timeout?: number }) {
+  async run({ command: command_, args, cwd, NODE_ENV, timeout }: RunArguments): Promise<RunResult> {
     debug('run', { command_, args, cwd, NODE_ENV, timeout });
 
     if (timeout) this.timeout = timeout;
 
-    return new Promise( (resolve, reject) => {
+    return new Promise( (resolve: (result: RunResult)=>void, reject: (reason: RunError)=>void) => {
       let error = '';
       let stdout  = '';
       let stderr = '';
       let output = '';
-      let timer = null;
+      let timer: NodeJS.Timeout = null;
 
       //const command = spawn('ls', [ '-lh', '/usr' ]);
 
@@ -79,8 +100,8 @@ export class ShellRunner extends EventEmitter {
           error = error || `non-zero result code: ${code}`;
         }
         return error
-               ? reject({ code, error })
-               : resolve({ code, output, stdout, stderr });
+          ? reject({ code, error })
+          : resolve({ code, output, stdout, stderr });
       }
 
       command.on('exit', (code, signal) => {
