@@ -1,9 +1,10 @@
 // Debug.enable('*');
 
 import { EventEmitter } from 'events';
-import { spawn } from 'child_process'
+import {spawn, ChildProcessByStdio, SpawnOptionsWithoutStdio, ChildProcessWithoutNullStreams} from 'child_process'
 // import {ONE_MINUTE,ONE_SECOND} from '../../utils';
 import Debug from 'debug';
+import {Readable} from "stream";
 
 const debug = Debug('Runner');
 
@@ -39,11 +40,11 @@ export class ShellRunner extends EventEmitter {
       const env = Object.assign({}, process.env);
       env.NODE_ENV = NODE_ENV;
 
-      const options = {
+      const options: SpawnOptionsWithoutStdio = {
         cwd,
         //  env,
       };
-      const command = spawn(command_, args, options);
+      const command: ChildProcessWithoutNullStreams = spawn(command_, args, options);
 
       command.stdout.on('data', (_data) => {
         const data = _data.toString();
@@ -90,8 +91,8 @@ export class ShellRunner extends EventEmitter {
         return handleExit('close', code, signal);
       });
 
-      function handleTimeout () {
-        error = `timeout ${timeout} ms`;
+      const handleTimeout = () => {
+        error = `timeout ${this.timeout} ms`;
         debug(`handleTimeout() ERROR: ${error}`);
         //console.error(`ERROR: ${error}`);
 
@@ -100,8 +101,8 @@ export class ShellRunner extends EventEmitter {
         //command.kill('SIGKILL');
       }
 
-      debug(`setting timer for ${timeout} ms`);
-      timer = setTimeout(handleTimeout, timeout);
+      debug(`setting timer for ${this.timeout} ms`);
+      timer = setTimeout(handleTimeout, this.timeout);
 
     });
   }

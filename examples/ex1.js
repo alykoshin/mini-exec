@@ -1,10 +1,4 @@
-/**
- * Created by alykoshin on 22.04.16.
- */
-
-'use strict';
-
-var exec = require('../');
+const exec = require('../').exec;
 
 
 //exec('ls', ['-l'], null, function(err, stderr, stdout) {
@@ -16,7 +10,7 @@ exec('ls', ['-l'], null, function(err, stderr, stdout) {
     console.log('=============================');
 
   }, function(log) {
-    var lines = log.split(/\r|\n/);
+  const lines = log.split(/\r|\n/);
     lines.forEach(function(s) {console.log('* ' + s); });
     //console.log('* log:', log);
   }

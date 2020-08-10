@@ -1,7 +1,12 @@
-import { spawn } from 'child_process'
+import {spawn, ChildProcessByStdio, ChildProcessWithoutNullStreams} from 'child_process'
 
 
-export const exec = function(command, params, options, exitCallback, logCallback) {
+interface ExecOptions {
+  stdinStr?: string
+  debug?: boolean
+}
+
+export const exec = function(command, params, options: ExecOptions, exitCallback: (err: Error|number, output?: string)=>void, logCallback?: (msg: string)=>void) {
   options = options || {};
 
   var logger = {
@@ -33,13 +38,13 @@ export const exec = function(command, params, options, exitCallback, logCallback
     }
   };
 
-  var std = {
+  const std = {
     in: '',
     out: '',
     err: ''
   };
-  var exitCode = null;
-  var child;
+  let exitCode: number|null = null;
+  let child: ChildProcessWithoutNullStreams;
 
   //if (!options.platforms.hasOwnProperty(process.platform)) {
   //  var err = new Error('Unknown process platform: ' + process.platform);
@@ -79,8 +84,8 @@ export const exec = function(command, params, options, exitCallback, logCallback
 
   // Handlers for spawned process
 
-  child.stdout.on('data', function(buffer) {
-    var s = buffer.toString('utf8');
+  child.stdout.on('data', function(buffer: Buffer) {
+    const s: string = buffer.toString('utf8');
     std.out += s;
     logger.info(s);
     logger.debug('Cmd.execute(): child.stdout.on(\'buffer\'): data: ' + s);
@@ -101,8 +106,8 @@ export const exec = function(command, params, options, exitCallback, logCallback
     }
   });
 
-  child.stderr.on('data', function(buffer) {
-    var data = buffer.toString('utf8');
+  child.stderr.on('data', function(buffer: Buffer) {
+    const data: string = buffer.toString('utf8');
     std.err += data;
     logger.log('Cmd.execute(): child.stderr.on(\'data\'): data: ' + data);
   });
@@ -111,7 +116,7 @@ export const exec = function(command, params, options, exitCallback, logCallback
     return logger.error('Cmd.execute(): child.on(\'error\') child process returned error:', error);
   });
 
-  child.on('exit', function(code) {
+  child.on('exit', function(code: number) {
     logger.debug('Cmd.execute(): child.on(\'exit\') child process exited with code: ' + code);
     if (code !== 0) {
       return logger.error('Cmd.execute(): child process exited with NON-ZERO code:', code);
